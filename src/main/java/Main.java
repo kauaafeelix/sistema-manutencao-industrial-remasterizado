@@ -16,6 +16,8 @@ public class Main {
         int opcao;
         do {
             System.out.println("""
+                    
+                    
                     -------------- Seja Bem-Vindo --------------
                     Sistema de Gestão de Almoxarifado Industrial
                     
@@ -62,25 +64,27 @@ public class Main {
     }
 
     public static void cadastrarFornecedor() throws SQLException {
+        try{
         var dao = new FornecedorDAO();
         System.out.println("\n----------- Cadastro de Fornecedor -----------");
         System.out.print("Nome do Fornecedor: ");
         String nome = scStr.nextLine();
         if (nome == null || nome.trim().isEmpty()) {
             System.err.println("[ERRO] Nome do fornecedor não pode ser vazio.");
-            return;
         }
         System.out.print("CNPJ do Fornecedor: ");
         String cnpj = scStr.nextLine();
         if (cnpj == null || cnpj.trim().isEmpty()) {
             System.err.println("[ERRO] CNPJ do fornecedor não pode ser vazio.");
-            return;
         }
         boolean existeCnpj = dao.existeCnpj(cnpj);
         if(!existeCnpj){
             var fornecedor = new Fornecedor(nome, cnpj);
             dao.cadastrarFornecedor(fornecedor);
-            return;
+        }
+        } catch (SQLException e){
+            System.err.println("[ERRO] Erro ao cadastrar fornecedor: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 }
