@@ -24,10 +24,7 @@ public class FornecedorDAO {
             ps.setString(1, fornecedor.getNome());
             ps.setString(2, fornecedor.getCnpj());
             ps.executeUpdate();
-            System.out.println("[OK] Fornecedor cadastrado com sucesso!");
-        } catch (SQLException e){
-            System.err.println("[ERRO] Erro ao cadastrar fornecedor: " + e.getMessage());
-            e.printStackTrace();
+            System.out.println("\n[OK] Fornecedor cadastrado com sucesso!");
         }
 
     }
@@ -36,7 +33,7 @@ public class FornecedorDAO {
         boolean existe = false;
 
         String sql = """
-                SELECT id, fornecedor, cnpj 
+                SELECT id, nome, cnpj 
                 FROM Fornecedor 
                 WHERE cnpj = ?
                 """;
@@ -47,11 +44,8 @@ public class FornecedorDAO {
             var rs = ps.executeQuery();
             if (rs.next()) {
                 existe = true;
-                System.out.println("[AVISO] CNPJ já cadastrado no sistema.");
+                System.err.println("\n[AVISO] CNPJ já cadastrado no sistema.");
             }
-        } catch (SQLException e){
-            System.err.println("[ERRO] Erro ao verificar existência do CNPJ: " + e.getMessage());
-            e.printStackTrace();
         }
         return existe;
     }
@@ -77,9 +71,6 @@ public class FornecedorDAO {
 
                 fornecedores.add(fornecedor);
             }
-        } catch (SQLException e) {
-            System.err.println("[ERRO] Erro ao listar fornecedores: " + e.getMessage());
-            e.printStackTrace();
         }
         return fornecedores;
     }
