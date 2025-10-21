@@ -5,7 +5,10 @@ import Model.Fornecedor;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FornecedorDAO {
 
@@ -43,5 +46,30 @@ public class FornecedorDAO {
             }
         }
         return existe;
+    }
+
+    public List<Fornecedor> listarFornecedores()throws SQLException {
+        List<Fornecedor>fornecedores = new ArrayList<>();
+
+        String sql = """
+                SELECT id, nome, cnpj
+                FROM Fornecedor
+                """;
+
+        try (Connection conn = Conexao.conectar();
+             PreparedStatement ps = conn.prepareStatement(sql)){
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()){
+                Fornecedor fornecedor = new Fornecedor();
+                fornecedor.setId(rs.getInt("id"));
+                fornecedor.setNome(rs.getString("nome"));
+                fornecedor.setCnpj(rs.getString("cnpj"));
+
+                fornecedores.add(fornecedor);
+            }
+        }
+        return fornecedores;
     }
 }
